@@ -7,7 +7,94 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="main-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>📚 SOLID Principles</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <!-- SRP -->
+                <div class="sidebar-group">
+                    <button class="sidebar-toggle" onclick="toggleSidebar(this, 'srp-items')">
+                        <span class="arrow">▶</span>
+                        <span>🔵 Single Responsibility (SRP)</span>
+                    </button>
+                    <div id="srp-items" class="sidebar-items hidden">
+                        <a href="#srp-definition" class="sidebar-item">Definition</a>
+                        <a href="#srp-bad" class="sidebar-item">Bad Design</a>
+                        <a href="#srp-good" class="sidebar-item">Good Design</a>
+                        <a href="#module1-code" class="sidebar-item extra">Module 1 Code</a>
+                    </div>
+                </div>
+
+                <!-- OCP -->
+                <div class="sidebar-group">
+                    <button class="sidebar-toggle" onclick="toggleSidebar(this, 'ocp-items')">
+                        <span class="arrow">▶</span>
+                        <span>🟢 Open/Closed (OCP)</span>
+                    </button>
+                    <div id="ocp-items" class="sidebar-items hidden">
+                        <a href="#ocp-definition" class="sidebar-item">Definition</a>
+                        <a href="#ocp-bad" class="sidebar-item">Bad Design</a>
+                        <a href="#ocp-good" class="sidebar-item">Good Design</a>
+                        <a href="#module2-code" class="sidebar-item extra">Module 2 Code</a>
+                    </div>
+                </div>
+
+                <!-- LSP -->
+                <div class="sidebar-group">
+                    <button class="sidebar-toggle" onclick="toggleSidebar(this, 'lsp-items')">
+                        <span class="arrow">▶</span>
+                        <span>🟡 Liskov Substitution (LSP)</span>
+                    </button>
+                    <div id="lsp-items" class="sidebar-items hidden">
+                        <a href="#lsp-definition" class="sidebar-item">Definition</a>
+                        <a href="#lsp-bad" class="sidebar-item">Bad Design</a>
+                        <a href="#lsp-good" class="sidebar-item">Good Design</a>
+                        <a href="#lsp-payment" class="sidebar-item">Payment Example</a>
+                        <a href="#module3-code" class="sidebar-item extra">Module 3 Code</a>
+                    </div>
+                </div>
+
+                <!-- ISP -->
+                <div class="sidebar-group">
+                    <button class="sidebar-toggle" onclick="toggleSidebar(this, 'isp-items')">
+                        <span class="arrow">▶</span>
+                        <span>🟠 Interface Segregation (ISP)</span>
+                    </button>
+                    <div id="isp-items" class="sidebar-items hidden">
+                        <a href="#isp-definition" class="sidebar-item">Definition</a>
+                        <a href="#isp-bad" class="sidebar-item">Bad Design</a>
+                        <a href="#isp-good" class="sidebar-item">Good Design</a>
+                        <a href="#module4-code" class="sidebar-item extra">Module 4 Code</a>
+                    </div>
+                </div>
+
+                <!-- DIP -->
+                <div class="sidebar-group">
+                    <button class="sidebar-toggle" onclick="toggleSidebar(this, 'dip-items')">
+                        <span class="arrow">▶</span>
+                        <span>🔴 Dependency Inversion (DIP)</span>
+                    </button>
+                    <div id="dip-items" class="sidebar-items hidden">
+                        <a href="#dip-definition" class="sidebar-item">Definition</a>
+                        <a href="#dip-bad" class="sidebar-item">Bad Design</a>
+                        <a href="#dip-good" class="sidebar-item">Good Design</a>
+                        <a href="#module5-code" class="sidebar-item extra">Module 5 Code</a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#quick-revision" class="sidebar-item">Quick Revision</a>
+                <a href="#resources" class="sidebar-item">Resources</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="content-wrapper">
         <!-- Header -->
         <header class="header">
             <h1>🧠 SOLID Principles in Python</h1>
@@ -72,14 +159,14 @@
             <!-- SRP -->
             <div class="principle-card">
                 <details>
-                    <summary class="principle-header">
+                    <summary class="principle-header" id="srp-definition">
                         <h3>1. Single Responsibility Principle (SRP)</h3>
                     </summary>
                     <div class="principle-content">
                         <h4>💡 Definition</h4>
                         <p>A class should have <strong>only one reason to change</strong>.</p>
 
-                        <h4>❌ Bad Design</h4>
+                        <h4 id="srp-bad">❌ Bad Design</h4>
                         <pre><code class="language-python">class UserService:
     def register(self, username):
         if len(username) &lt; 3:
@@ -88,7 +175,7 @@
         print("Sending email")</code></pre>
                         <p>👉 <strong>Problem:</strong> Validation + DB + Notification → all in one class</p>
 
-                        <h4>✅ Good Design</h4>
+                        <h4 id="srp-good">✅ Good Design</h4>
                         <pre><code class="language-python">class UserValidator:
     def validate(self, username):
         if len(username) &lt; 3:
@@ -119,7 +206,7 @@ class UserService:
             <!-- OCP -->
             <div class="principle-card">
                 <details>
-                    <summary class="principle-header">
+                    <summary class="principle-header" id="ocp-definition">
                         <h3>2. Open/Closed Principle (OCP)</h3>
                     </summary>
                     <div class="principle-content">
@@ -168,7 +255,7 @@ class DiscountService:
             <!-- LSP -->
             <div class="principle-card">
                 <details>
-                    <summary class="principle-header">
+                    <summary class="principle-header" id="lsp-definition">
                         <h3>3. Liskov Substitution Principle (LSP)</h3>
                     </summary>
                     <div class="principle-content">
@@ -205,7 +292,7 @@ class Penguin(Bird):
     def swim(self):
         print("Penguin swimming")</code></pre>
 
-                        <h4>💳 Real-World Example: Payment System</h4>
+                        <h4 id="lsp-payment">💳 Real-World Example: Payment System</h4>
                         <p><strong>LSP Violation:</strong> COD cannot process online payment</p>
                         <pre><code class="language-python">class CashOnDelivery(Payment):
     def pay(self, amount):
@@ -234,7 +321,7 @@ class CashOnDelivery(Payment):
             <!-- ISP -->
             <div class="principle-card">
                 <details>
-                    <summary class="principle-header">
+                    <summary class="principle-header" id="isp-definition">
                         <h3>4. Interface Segregation Principle (ISP)</h3>
                     </summary>
                     <div class="principle-content">
@@ -281,7 +368,7 @@ class Human(Workable, Eatable):
             <!-- DIP -->
             <div class="principle-card">
                 <details>
-                    <summary class="principle-header">
+                    <summary class="principle-header" id="dip-definition">
                         <h3>5. Dependency Inversion Principle (DIP)</h3>
                     </summary>
                     <div class="principle-content">
@@ -361,6 +448,7 @@ class NotificationService:
         <footer class="footer">
             <p>&copy; 2024 SOLID Principles Guide | Made for Clean Code</p>
         </footer>
+        </div>
     </div>
 
     <script src="script.js"></script>

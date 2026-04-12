@@ -12,16 +12,41 @@
   <div class="app">
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
-      <div class="logo">SOLID</div>
+      <div class="logo">SOLID Principles</div>
       <nav class="nav-list">
-        {% for item in sidebar %}
-          <a class="nav-item {% if item == active_file %}active{% endif %}" href="{% if item == 'readme.md' %}/{% else %}/file/{{ item }}{% endif %}">
-            {% if item == 'readme.md' %}
-              📖 Documentation
-            {% else %}
-              📄 {{ item }}
-            {% endif %}
-          </a>
+        {% for section in sidebar %}
+          <div class="sidebar-section">
+            <div class="section-title" onclick="toggleSection(this)">
+              <span class="toggle-arrow">▶</span>
+              📁 {{ section.folder }}
+            </div>
+            
+            <div class="section-items {% if not active_file.startswith(section.folder_key) %}hidden{% endif %}">
+              <!-- Markdown Files -->
+              {% if section.files.markdown %}
+                <div class="file-group">
+                  <div class="group-label">📄 Documentation</div>
+                  {% for file in section.files.markdown %}
+                    <a class="nav-item {% if active_file == section.folder_key + '/' + file %}active{% endif %}" href="/file/{{ section.folder_key }}/{{ file }}">
+                      📖 {{ file }}
+                    </a>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <!-- Python Files -->
+              {% if section.files.python %}
+                <div class="file-group">
+                  <div class="group-label">🐍 Python Modules</div>
+                  {% for file in section.files.python %}
+                    <a class="nav-item {% if active_file == section.folder_key + '/' + file %}active{% endif %}" href="/file/{{ section.folder_key }}/{{ file }}">
+                      🔧 {{ file }}
+                    </a>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
         {% endfor %}
       </nav>
     </aside>
@@ -44,9 +69,29 @@
   </div>
 
   <script>
+    // Highlight code blocks
     document.querySelectorAll('pre code').forEach(block => {
       hljs.highlightElement(block);
     });
+
+    // Initialize arrow rotations on page load
+    document.querySelectorAll('.section-title').forEach(title => {
+      const items = title.nextElementSibling;
+      const arrow = title.querySelector('.toggle-arrow');
+      
+      if (!items.classList.contains('hidden')) {
+        arrow.style.transform = 'rotate(90deg)';
+      }
+    });
+
+    // Toggle sidebar sections
+    function toggleSection(element) {
+      const items = element.nextElementSibling;
+      const arrow = element.querySelector('.toggle-arrow');
+      
+      items.classList.toggle('hidden');
+      arrow.style.transform = items.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
+    }
   </script>
 </body>
 </html>
