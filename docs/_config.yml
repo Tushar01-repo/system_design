@@ -1,0 +1,22 @@
+title: SOLID Principles in Python
+description: Complete guide with examples for interview preparation and clean code
+author: System Design Guide
+url: https://yourusername.github.io/system_design
+
+# Build settings
+markdown: kramdown
+theme: jekyll-theme-minimal
+
+# Exclude files from being processed
+exclude:
+  - README.md
+  - .gitignore
+  - .github
+
+# Keep files
+keep_files:
+  - style.css
+  - script.js
+
+# Collections
+collections_dir: .

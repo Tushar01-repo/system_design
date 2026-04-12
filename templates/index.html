@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SOLID Framework - Documentation & Modules</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo">SOLID</div>
+      <nav class="nav-list">
+        {% for item in sidebar %}
+          <a class="nav-item {% if item == active_file %}active{% endif %}" href="{% if item == 'readme.md' %}/{% else %}/file/{{ item }}{% endif %}">
+            {% if item == 'readme.md' %}
+              📖 Documentation
+            {% else %}
+              📄 {{ item }}
+            {% endif %}
+          </a>
+        {% endfor %}
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main">
+      <header class="top-bar">
+        <h1>{{ file_data.name }}</h1>
+        <span class="badge {% if file_data.type == 'markdown' %}markdown{% else %}code{% endif %}">{{ file_data.type }}</span>
+      </header>
+
+      <main class="editor-container">
+        {% if file_data.type == 'markdown' %}
+          <article class="markdown-content">{{ file_data.content | safe }}</article>
+        {% else %}
+          <div class="code-editor">{{ file_data.content | safe }}</div>
+        {% endif %}
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('pre code').forEach(block => {
+      hljs.highlightElement(block);
+    });
+  </script>
+</body>
+</html>

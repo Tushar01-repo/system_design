@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLID Principles in Python</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🧠 SOLID Principles in Python</h1>
+            <p class="subtitle">Complete Guide with Examples for Interview Preparation & Clean Code</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <a href="#what-is-solid" class="nav-link active">What is SOLID?</a>
+            <a href="#principles" class="nav-link">Principles</a>
+            <a href="#quick-revision" class="nav-link">Quick Revision</a>
+            <a href="#resources" class="nav-link">Resources</a>
+        </nav>
+
+        <!-- What is SOLID Section -->
+        <section id="what-is-solid" class="section">
+            <h2>📌 What is SOLID?</h2>
+            <p>SOLID is a set of 5 object-oriented design principles that help you write clean, maintainable, and scalable code.</p>
+            
+            <table class="principles-table">
+                <thead>
+                    <tr>
+                        <th>Principle</th>
+                        <th>Full Name</th>
+                        <th>Definition</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>S</strong></td>
+                        <td>Single Responsibility</td>
+                        <td>One reason to change per class</td>
+                    </tr>
+                    <tr>
+                        <td><strong>O</strong></td>
+                        <td>Open/Closed</td>
+                        <td>Open for extension, closed for modification</td>
+                    </tr>
+                    <tr>
+                        <td><strong>L</strong></td>
+                        <td>Liskov Substitution</td>
+                        <td>Subclasses behave correctly</td>
+                    </tr>
+                    <tr>
+                        <td><strong>I</strong></td>
+                        <td>Interface Segregation</td>
+                        <td>Small, specific interfaces</td>
+                    </tr>
+                    <tr>
+                        <td><strong>D</strong></td>
+                        <td>Dependency Inversion</td>
+                        <td>Depend on abstractions</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SOLID Principles Section -->
+        <section id="principles" class="section">
+            <h2>🔵 SOLID Principles</h2>
+
+            <!-- SRP -->
+            <div class="principle-card">
+                <details>
+                    <summary class="principle-header">
+                        <h3>1. Single Responsibility Principle (SRP)</h3>
+                    </summary>
+                    <div class="principle-content">
+                        <h4>💡 Definition</h4>
+                        <p>A class should have <strong>only one reason to change</strong>.</p>
+
+                        <h4>❌ Bad Design</h4>
+                        <pre><code class="language-python">class UserService:
+    def register(self, username):
+        if len(username) &lt; 3:
+            raise ValueError("Invalid username")
+        print("Saving user to DB")
+        print("Sending email")</code></pre>
+                        <p>👉 <strong>Problem:</strong> Validation + DB + Notification → all in one class</p>
+
+                        <h4>✅ Good Design</h4>
+                        <pre><code class="language-python">class UserValidator:
+    def validate(self, username):
+        if len(username) &lt; 3:
+            raise ValueError("Invalid username")
+
+class UserRepository:
+    def save(self, username):
+        print("Saving user to DB")
+
+class EmailService:
+    def send(self, username):
+        print("Sending email")
+
+class UserService:
+    def __init__(self, repo, validator, email_service):
+        self.repo = repo
+        self.validator = validator
+        self.email_service = email_service
+
+    def register(self, username):
+        self.validator.validate(username)
+        self.repo.save(username)
+        self.email_service.send(username)</code></pre>
+                    </div>
+                </details>
+            </div>
+
+            <!-- OCP -->
+            <div class="principle-card">
+                <details>
+                    <summary class="principle-header">
+                        <h3>2. Open/Closed Principle (OCP)</h3>
+                    </summary>
+                    <div class="principle-content">
+                        <h4>💡 Definition</h4>
+                        <p>Software should be:</p>
+                        <ul>
+                            <li><strong>Open for extension</strong></li>
+                            <li><strong>Closed for modification</strong></li>
+                        </ul>
+
+                        <h4>❌ Bad Design</h4>
+                        <pre><code class="language-python">class DiscountService:
+    def apply_discount(self, user_type, amount):
+        if user_type == "regular":
+            return amount * 0.95
+        elif user_type == "premium":
+            return amount * 0.90</code></pre>
+                        <p>👉 <strong>Problem:</strong> Adding new type → modify code</p>
+
+                        <h4>✅ Good Design (Strategy Pattern)</h4>
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class DiscountStrategy(ABC):
+    @abstractmethod
+    def apply(self, amount):
+        pass
+
+class RegularDiscount(DiscountStrategy):
+    def apply(self, amount):
+        return amount * 0.95
+
+class PremiumDiscount(DiscountStrategy):
+    def apply(self, amount):
+        return amount * 0.90
+
+class DiscountService:
+    def __init__(self, strategy: DiscountStrategy):
+        self.strategy = strategy
+
+    def apply_discount(self, amount):
+        return self.strategy.apply(amount)</code></pre>
+                    </div>
+                </details>
+            </div>
+
+            <!-- LSP -->
+            <div class="principle-card">
+                <details>
+                    <summary class="principle-header">
+                        <h3>3. Liskov Substitution Principle (LSP)</h3>
+                    </summary>
+                    <div class="principle-content">
+                        <h4>💡 Definition</h4>
+                        <p>Subclasses should be able to replace their parent class <strong>without breaking behavior</strong>.</p>
+
+                        <h4>❌ Bad Design</h4>
+                        <pre><code class="language-python">class Bird:
+    def fly(self):
+        print("Flying")
+
+class Penguin(Bird):
+    def fly(self):
+        raise Exception("Cannot fly")</code></pre>
+                        <p>👉 <strong>Problem:</strong> Penguin breaks expected behavior</p>
+
+                        <h4>✅ Good Design</h4>
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class Bird(ABC):
+    def eat(self):
+        print("Eating")
+
+class FlyingBird(Bird):
+    @abstractmethod
+    def fly(self):
+        pass
+
+class Sparrow(FlyingBird):
+    def fly(self):
+        print("Sparrow flying")
+
+class Penguin(Bird):
+    def swim(self):
+        print("Penguin swimming")</code></pre>
+
+                        <h4>💳 Real-World Example: Payment System</h4>
+                        <p><strong>LSP Violation:</strong> COD cannot process online payment</p>
+                        <pre><code class="language-python">class CashOnDelivery(Payment):
+    def pay(self, amount):
+        raise Exception("COD cannot process online")</code></pre>
+
+                        <h4>✅ LSP Compliant Solution</h4>
+                        <pre><code class="language-python">class Payment(ABC):
+    pass
+
+class OnlinePayment(Payment):
+    @abstractmethod
+    def pay(self, amount):
+        pass
+
+class CreditCardPayment(OnlinePayment):
+    def pay(self, amount):
+        print(f"Paid {amount} using Credit Card")
+
+class CashOnDelivery(Payment):
+    def collect_cash(self, amount):
+        print(f"Collect {amount} on delivery")</code></pre>
+                    </div>
+                </details>
+            </div>
+
+            <!-- ISP -->
+            <div class="principle-card">
+                <details>
+                    <summary class="principle-header">
+                        <h3>4. Interface Segregation Principle (ISP)</h3>
+                    </summary>
+                    <div class="principle-content">
+                        <h4>💡 Definition</h4>
+                        <p>Clients should not be forced to implement methods they don't use.</p>
+
+                        <h4>❌ Bad Design</h4>
+                        <pre><code class="language-python">class Worker:
+    def work(self): pass
+    def eat(self): pass
+
+class Robot(Worker):
+    def work(self):
+        print("Working")
+    def eat(self):
+        pass  # Robot doesn't eat!</code></pre>
+
+                        <h4>✅ Good Design</h4>
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class Workable(ABC):
+    @abstractmethod
+    def work(self):
+        pass
+
+class Eatable(ABC):
+    @abstractmethod
+    def eat(self):
+        pass
+
+class Robot(Workable):
+    def work(self):
+        print("Robot working")
+
+class Human(Workable, Eatable):
+    def work(self):
+        print("Human working")
+    def eat(self):
+        print("Human eating")</code></pre>
+                    </div>
+                </details>
+            </div>
+
+            <!-- DIP -->
+            <div class="principle-card">
+                <details>
+                    <summary class="principle-header">
+                        <h3>5. Dependency Inversion Principle (DIP)</h3>
+                    </summary>
+                    <div class="principle-content">
+                        <h4>💡 Definition</h4>
+                        <p>Depend on <strong>abstractions</strong>, not <strong>concrete implementations</strong>.</p>
+
+                        <h4>❌ Bad Design</h4>
+                        <pre><code class="language-python">class EmailService:
+    def send(self, msg):
+        print("Email:", msg)
+
+class NotificationService:
+    def __init__(self):
+        self.email = EmailService()
+
+    def notify(self, msg):
+        self.email.send(msg)</code></pre>
+
+                        <h4>✅ Good Design</h4>
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class NotificationSender(ABC):
+    @abstractmethod
+    def send(self, msg):
+        pass
+
+class EmailService(NotificationSender):
+    def send(self, msg):
+        print("Email:", msg)
+
+class SMSService(NotificationSender):
+    def send(self, msg):
+        print("SMS:", msg)
+
+class NotificationService:
+    def __init__(self, sender: NotificationSender):
+        self.sender = sender
+
+    def notify(self, msg):
+        self.sender.send(msg)</code></pre>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- Quick Revision Section -->
+        <section id="quick-revision" class="section">
+            <h2>🧠 Quick Revision</h2>
+            <div class="revision-box">
+                <p><strong>S</strong> → One responsibility per class</p>
+                <p><strong>O</strong> → Extend without modifying</p>
+                <p><strong>L</strong> → Subclasses behave correctly</p>
+                <p><strong>I</strong> → Small, specific interfaces</p>
+                <p><strong>D</strong> → Depend on abstractions</p>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" class="section">
+            <h2>🚀 Key Takeaways</h2>
+            <ul class="takeaways">
+                <li>Write <strong>modular code</strong></li>
+                <li>Avoid <strong>tight coupling</strong></li>
+                <li>Prefer <strong>composition over inheritance</strong></li>
+                <li>Design for <strong>change and scalability</strong></li>
+            </ul>
+
+            <h2>📚 Purpose</h2>
+            <ul class="purpose">
+                <li>Interview preparation (LLD / System Design)</li>
+                <li>Clean code practices</li>
+                <li>Strong OOP fundamentals</li>
+            </ul>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 SOLID Principles Guide | Made for Clean Code</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
