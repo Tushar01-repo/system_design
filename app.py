@@ -13,7 +13,10 @@ CONTENT_FOLDERS = [
     "classes_and_objects",
     "solid_principles",
     "abstract_factory",
-    "builder_pattern"
+    "builder_pattern",
+    "facade_pattern",
+    "chain_of_responsibility",
+    "strategy_design_pattern"
 ]
 
 def get_sidebar_structure():
