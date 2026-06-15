@@ -39,7 +39,7 @@ Think of a **phone charger 🔌**
 
 ## 🧩 Class Diagram (Mental Model)
 
-```id="k2m7xp"
+```
 Client → Target Interface
              ↑
          Adapter → Adaptee
@@ -51,7 +51,7 @@ Client → Target Interface
 
 You have an old system:
 
-```python id="g8q1pw"
+```
 class OldPaymentGateway:
     def make_payment(self, amount):
         print(f"Paid {amount} using old gateway")
@@ -59,7 +59,7 @@ class OldPaymentGateway:
 
 But your system expects:
 
-```python id="zq6w7e"
+```
 class PaymentProcessor:
     def pay(self, amount):
         pass
@@ -75,7 +75,7 @@ class PaymentProcessor:
 
 ### 🔹 Step 1: Target Interface
 
-```python id="e7j1cz"
+```
 class PaymentProcessor:
     def pay(self, amount):
         pass
@@ -85,7 +85,7 @@ class PaymentProcessor:
 
 ### 🔹 Step 2: Adaptee
 
-```python id="h1g9df"
+```
 class OldPaymentGateway:
     def make_payment(self, amount):
         print(f"Paid {amount} using old gateway")
@@ -95,7 +95,7 @@ class OldPaymentGateway:
 
 ### 🔹 Step 3: Adapter
 
-```python id="3u7k9x"
+```
 class PaymentAdapter(PaymentProcessor):
     def __init__(self, old_gateway):
         self.old_gateway = old_gateway
@@ -108,7 +108,7 @@ class PaymentAdapter(PaymentProcessor):
 
 ### 🔹 Step 4: Client Code
 
-```python id="l4p9sd"
+```
 gateway = OldPaymentGateway()
 adapter = PaymentAdapter(gateway)
 
@@ -119,7 +119,7 @@ adapter.pay(1000)
 
 ## 🧠 Output
 
-```id="r7q2dz"
+```
 Paid 1000 using old gateway
 ```
 

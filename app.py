@@ -10,13 +10,29 @@ BASE_DIR = Path(__file__).resolve().parent
 
 # Define all folders to scan
 CONTENT_FOLDERS = [
+    # Basic
     "classes_and_objects",
+
+    # SOLID principles
     "solid_principles",
+
+    # Creational Design Pattern 
     "abstract_factory",
     "builder_pattern",
+
+    # Structural Design Pattern
+    "decorators",
     "facade_pattern",
+    "adapter_design_pattern",
+
+    # Behavioral Design Pattern
     "chain_of_responsibility",
-    "strategy_design_pattern"
+    "strategy_design_pattern",
+    "observer_design_pattern",
+    "memento",
+
+    # Design Pattern Question
+    "design_pattern_question"
 ]
 
 def get_sidebar_structure():
