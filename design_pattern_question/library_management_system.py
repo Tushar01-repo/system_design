@@ -1,4 +1,13 @@
 from datetime import datetime, timedelta
+from enum import Enum
+
+# Enums are created for the book status
+class BookStatus(Enum):
+    AVAILABLE = "Available"
+    ISSUED = "Issued"
+    RESERVED = "Reserved"
+    LOST = "Lost"
+    MAINTENANCE = "Maintenance"
 
 class Book:
     def __init__(self,book_id, book_title, book_author, book_isbn, book_year):
@@ -17,16 +26,16 @@ class BookItem:
         # and if let say tomorrow we want to fetch author name, isbn from book item then we can easily fetched it from 
         # book class bcz it carries everything instead of just book name 
         self.book = book
-        self.book_available = True
+        self.status = BookStatus.AVAILABLE
 
     def is_available(self):
-        return self.book_available
+        return self.status == BookStatus.AVAILABLE
     
     def mark_issued(self):
-        self.book_available = False
+        self.status = BookStatus.ISSUED
     
     def mark_available(self):
-        self.book_available = True
+        self.status = BookStatus.AVAILABLE
 
 
 class Library:
